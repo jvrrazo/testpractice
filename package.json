@@ -2,7 +2,7 @@
   "name": "aws-practice-questions",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://vickthor16.github.io/testpractice/yarn",
+  "homepage": "https://vickthor16.github.io/testpractice/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.14.1",
@@ -45,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^5.0.0"
   }
 }
