@@ -103,7 +103,7 @@
     },
     "number": 8,
     "answer": [
-      "a",
+      "d",
       "e"
     ]
   },
@@ -2157,7 +2157,7 @@
     },
     "number": 160,
     "answer": [
-      "b"
+      "c"
     ]
   },
   {
@@ -5642,7 +5642,7 @@
     ]
   },
   {
-    "q": "Which AWS feature will reduce the customerâ€™s total cost of ownership (TCO)?",
+    "q": "Which AWS feature will reduce the customers total cost of ownership (TCO)?",
     "choices": {
       "a": "Shared responsibility security model.",
       "b": "Single tenancy.",
@@ -5651,7 +5651,7 @@
     },
     "number": 418,
     "answer": [
-      "a"
+      "c"
     ]
   },
   {
@@ -6641,7 +6641,7 @@
     },
     "number": 491,
     "answer": [
-      "a"
+      "d"
     ]
   },
   {
@@ -6897,7 +6897,7 @@
       "d": "Basic"
     },
     "number": 510,
-    "answer": []
+    "answer": ["b"]
   },
   {
     "q": "What is the lowest-cost, durable storage option for retaining database backups for immediate retrieval?",
@@ -6935,7 +6935,7 @@
     },
     "number": 513,
     "answer": [
-      "d"
+      "c"
     ]
   },
   {
@@ -7579,7 +7579,7 @@
     "number": 561,
     "answer": [
       "c",
-      "e"
+      "d"
     ]
   },
   {
@@ -7918,7 +7918,7 @@
     "number": 586,
     "answer": [
       "b",
-      "d"
+      "c"
     ]
   },
   {
