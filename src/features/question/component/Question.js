@@ -10,21 +10,32 @@ function Question(props) {
   const answers = question.answer;
   const userSelectedChoice = answerKey[question.number] !== undefined
     ? answerKey[question.number] : -1;
+  const testType = props.testType;
 
-  const renderIcon = (choice) => {
-    const x2 = Object.values(answers).includes(choice) ? null : <FaTimesCircle className="radio-icon" />;
-    return x2;
+
+
+  const renderIcon = (choice, testType) => {
+    
+    if(testType === 'practice'){
+      return Object.values(answers).includes(choice) ? null : <FaTimesCircle className="radio-icon" />;
+
+    }
+    
   };
 
-  const renderText = (choice) => {
-    return { color: selectedOption === choice ? 'black' : 'red' }
+  const renderText = (choice, testType) => {
+    if(testType === 'practice'){
+      return { color: selectedOption === choice ? 'black' : 'red' }
+    } 
+   
   }
 
   const [selectedOption, setSelectedOption] = useState(false);
+  
   const handleOptionChange = (event, number, choice) => {
     props.markChoice(number, choice);
     setSelectedOption(null);
-    const x2 = Object.values(answers).includes(choice) ? setSelectedOption(event.target.value) : null;
+    return Object.values(answers).includes(choice) ? setSelectedOption(event.target.value) : null;
   };
 
   if (question) {
@@ -50,10 +61,10 @@ function Question(props) {
                   {choices[choice]}
                   
                   {choice === userSelectedChoice ?
-                    renderIcon(choice) : null}
+                    renderIcon(choice, testType) : null}
                 </span>}
                 style={choice === userSelectedChoice ?
-                  renderText(choice) : null}
+                  renderText(choice, testType) : null}
               >
               </Form.Check>
             );

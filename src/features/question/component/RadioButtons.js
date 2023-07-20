@@ -4,7 +4,7 @@ const RadioButtons = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionChange = (event) => {
-    console.log(event.target);
+    //console.log(event.target);
     setSelectedOption(event.target.value);
   };
 

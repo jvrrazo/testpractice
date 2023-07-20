@@ -24,7 +24,9 @@ function Certification() {
       const elem = document.getElementById('scroll-to');
       elem.scrollIntoView({block: 'end', 'behavior': 'auto'});
 
-      while( questions.length > 70 ) {
+    //  console.log(questions);
+
+      while( questions.length > 65 ) {
         var index = Math.floor( Math.random()*questions.length );
      //   console.log( questions[index] ); // Log the item
         questions.splice( index, 1 ); // Remove the item from the array
