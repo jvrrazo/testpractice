@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { useSelector, useDispatch } from 'react-redux'
 
 import {startExam, Exam} from '../../exam';
-import {setJSON, setFormat} from '../../certification';
+import {setJSON} from '../../certification';
 import {Result} from '../../result';
 import questions from '../../../data/ccp.json';
 

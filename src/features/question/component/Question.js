@@ -36,6 +36,7 @@ function Question(props) {
     props.markChoice(number, choice);
     setSelectedOption(null);
     return Object.values(answers).includes(choice) ? setSelectedOption(event.target.value) : null;
+
   };
 
   if (question) {
