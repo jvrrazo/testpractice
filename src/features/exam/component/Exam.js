@@ -15,8 +15,6 @@ function Exam() {
   const dispatch = useDispatch();
 
   const activeCert = state.certificate.active;
-
-
   const { exam } = state;
 
   //let testLoaded = state.certificate. ? activeCertificate.href : ''
@@ -96,6 +94,7 @@ function Exam() {
       }
       <Card className="exam">
         <Question
+          testType= {activeCert.type}
           markChoice={markChoice}
           question={questions[exam.current - 1]}
           answerKey={exam.answerKey}

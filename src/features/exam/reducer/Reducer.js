@@ -19,6 +19,10 @@ export const exam = createSlice({
         state.jsonData = action.payload.action
     },
 
+    questionRestart:(state) => {
+      state.current = 1;
+    },
+
     questionsAttempted: (state, action) => {
       const move = action.payload.action
       if (state.current < (state.total) && move === 'next') {
@@ -35,6 +39,7 @@ export const exam = createSlice({
         state.answered = 0;
         state.result.incorrect = 0;
         state.result.correct = 0;
+        state.answerKey = {};
       }
       state.total = action.payload.total
     },
@@ -47,16 +52,17 @@ export const exam = createSlice({
     setResult: (state, action) => {
       state.result.correct = action.payload.correct;
       state.result.incorrect = action.payload.incorrect;
-    }
+    },
+
   }
 });
 
 /** Action creators are generated for each case reducer function  */
 export const { 
   questionsAttempted,
-  startExam,
   setAnswerKey,
-  setResult
+  setResult,
+  startExam
 } = exam.actions
 
 export default exam.reducer

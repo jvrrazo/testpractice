@@ -25,12 +25,9 @@ export const certification = createSlice({
       state.active.jsonData = action.payload.questions
       state.active.format = action.payload.format
      },
-
-    /*setFormat: (state,action) => {
-      state.active.format = action.payload
-     },*/
-
-  }
+     
+  },
+ 
 });
 
 /** Action creators are generated for each case reducer function  */
