@@ -2319,7 +2319,7 @@
     },
     "number": 172,
     "answer": [
-      "b"
+      "c"
     ]
   },
   {
@@ -2487,7 +2487,7 @@
     },
     "number": 184,
     "answer": [
-      "b"
+      "d"
     ]
   },
   {
@@ -3284,7 +3284,7 @@
     },
     "number": 243,
     "answer": [
-      "b"
+      "d"
     ]
   },
   {
@@ -3677,7 +3677,7 @@
     },
     "number": 272,
     "answer": [
-      "a"
+      "b"
     ]
   },
   {
@@ -6141,7 +6141,7 @@
     },
     "number": 454,
     "answer": [
-      "b"
+      "c"
     ]
   },
   {
@@ -7175,7 +7175,7 @@
     },
     "number": 531,
     "answer": [
-      "d"
+      "c"
     ]
   },
   {
@@ -7274,7 +7274,7 @@
     ]
   },
   {
-    "q": "A company is planning to migrate from on-premises to the AWS Cloud. When AWS tool or service provides detailed reports on estimated cost savings after migration?",
+    "q": "A company is planning to migrate from on-premises to the AWS Cloud. Which AWS tool or service provides detailed reports on estimated cost savings after migration?",
     "choices": {
       "a": "AWS Total Cost of Ownership (TCO) Calculator.",
       "b": "Cost Explorer.",
@@ -7283,7 +7283,7 @@
     },
     "number": 539,
     "answer": [
-      "c"
+      "a"
     ]
   },
   {
@@ -7668,13 +7668,13 @@
       "a": "Use the AWS Service Catalog to identify a list of on-premises resources that can be migrated",
       "b": "Build a VPN connection between an on-premises device and a virtual private gateway in the new VPC",
       "c": "Use Amazon Athena to query data from the on-premises database servers",
-      "d": "Connect the companyâ€™s on-premises data center to AWS using AWS Direct Connect",
+      "d": "Connect the company on-premises data center to AWS using AWS Direct Connect",
       "e": "Leverage Amazon CloudFront to restrict access to static web content provided through the companyâ€™s on-premises web servers"
     },
     "number": 568,
     "answer": [
-      "a",
-      "b"
+      "b",
+      "d"
     ]
   },
   {
