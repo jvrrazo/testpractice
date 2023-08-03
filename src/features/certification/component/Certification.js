@@ -16,6 +16,7 @@ function Certification() {
   // Initialize the dispatch method
   const dispatch = useDispatch();
   // Method sets the exam status
+  //just a comment
   const setExamStatus = (status) => {
     
 
