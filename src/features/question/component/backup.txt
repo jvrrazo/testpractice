@@ -1,0 +1,33 @@
+<Form>
+        {
+          Object.keys(options).map(choice => {
+            return (
+
+              
+              <Form.Check
+              
+                className="question-option my-3"
+                type="checkbox"
+                name="question"
+                checked={choice === userSelectedChoice ? 1 : 0}
+                onChange={(e) => handleOptionChange(e, question.number, choice)}
+                label={<span>
+                  {choices[choice]}
+                  
+                  {choice === userSelectedChoice ?
+                    renderIcon(choice, testType) : null}
+                </span>}
+                style={choice === userSelectedChoice ?
+                  renderText(choice, testType) : null}
+              />
+              
+            );
+          }
+          )
+        }
+        </Form>
+
+
+        
+
+        checked
