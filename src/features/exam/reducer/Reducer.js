@@ -6,11 +6,7 @@ export const exam = createSlice({
     current: 1,
     start: false,
     total: 0,
-    answerKey: [{
-      questionNumber: 0,
-        choices: [
-          ]}
-    ],
+    answerKey: [],
     answered: 0,
     result: {
       correct: 0,
@@ -44,7 +40,8 @@ export const exam = createSlice({
         state.answered = 0;
         state.result.incorrect = 0;
         state.result.correct = 0;
-        state.answerKey = [];
+        state.answerKey = []
+        
       }
       
       state.total = action.payload.total
@@ -71,27 +68,32 @@ export const exam = createSlice({
     
     saveAnswer: (state, action) => {
       const { questionNumber, choices } = action.payload;
-  
-      // Find the index of the question if it already exists in answerKey
+    //  console.log("questionNumber"+questionNumber);
       const index = state.answerKey.findIndex(q => q.questionNumber === questionNumber);
-      console.log(questionNumber);
-    //  const index = questionNumber-1;
 
-      if (choices.length === 0) {
-          if (index !== -1) {
-              // Remove the question from answerKey if no choices are selected
-              state.answerKey.splice(questionNumber, 1);
-          }
-      } else {
-          if (index !== -1) {
-              // Update the choices if the question already exists
-              console.log(choices);
-              state.answerKey[index].choices = choices;
-          } else {
-              // Add new question and choices if it doesn't exist
-              state.answerKey.push({ questionNumber, choices });
-          }
-      }
+   //   console.log(index);
+
+if (choices.length === 0) {
+    if (index !== -1) {
+        // Remove the question from answerKey if no choices are selected
+       // state.answered -= 1;
+        state.answerKey.splice(index, 1);
+    }
+} else {
+    if (index !== -1) {
+        // Update the choices if the question already exists
+        state.answerKey[index].choices = choices;
+    } else {
+        // Add new question and choices if it doesn't exist
+       // state.answered += 1;
+        state.answerKey.push({ questionNumber, choices });
+    }
+
+    
+}
+  
+//console.log("After:", JSON.stringify(state.answerKey));
+
   }
   }
 });

@@ -15,7 +15,7 @@ function Exam() {
   const { exam } = state;
 
   const toggleQuestions = (action) => {
-    const currentAnswer = exam.answerKey[exam.current-1];
+    const currentAnswer = exam.answerKey.find(q => q.questionNumber === exam.current);
 
     // Check if the current answer is either undefined or empty
     if (!currentAnswer || (Array.isArray(currentAnswer.choices) && currentAnswer.choices.length === 0)) {
@@ -23,12 +23,31 @@ function Exam() {
         return;  // Don't proceed to the next/previous question
     }
 
-    // If there's a valid answer, reset warning and proceed
+    // If there's a valid answer, reset warning and navigate
     setUserWarning(false);
-    dispatch(questionsAttempted({action}));
-}
+
+    if (action === 'next') {
+        if (exam.current < exam.total) {
+            dispatch(questionsAttempted({ action })); 
+        }
+    } else if (action === 'prev' && exam.current > 1) {
+        dispatch(questionsAttempted({ action }));
+    }
+};
 
   const checkResult = (questions) => {
+    const currentAnswer = exam.answerKey.find(q => q.questionNumber === exam.current);
+
+    // Check if the current answer is either undefined or empty
+    if (!currentAnswer || (Array.isArray(currentAnswer.choices) && currentAnswer.choices.length === 0)) {
+        setUserWarning(true);
+        return;  // Don't proceed to the next/previous question
+    }
+
+    // If there's a valid answer, reset warning and navigate
+    setUserWarning(false);
+
+    
     let correct = 0; 
     let incorrect = 0;
     const { answerKey } = exam;
@@ -49,6 +68,8 @@ function Exam() {
   
   let questions = exam.start ? activeCert.jsonData : [];
   let maxSelection = questions[exam.current - 1]?.answer.length;
+
+  console.log(exam.answered+" "+exam.total);
 
   return (
     <div className="mt-5">
@@ -72,7 +93,7 @@ function Exam() {
           <Button className="mb-1 mb-sm-1" onClick={() => toggleQuestions('next')} variant="primary">
             Next
           </Button>{' '}
-          {exam.answered >= exam.total && (
+          {exam.current >= exam.total && (
             <Button className="mb-1 mb-sm-1" onClick={() => checkResult(questions)} variant="secondary">
               Result
             </Button>

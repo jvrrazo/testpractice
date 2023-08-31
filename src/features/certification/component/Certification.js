@@ -27,7 +27,7 @@ function Certification() {
 
     //  console.log(questions);
 
-      while( questions.length > 65 ) {
+      while( questions.length > 5 ) {
         var index = Math.floor( Math.random()*questions.length );
      //   console.log( questions[index] ); // Log the item
         questions.splice( index, 1 ); // Remove the item from the array
@@ -52,7 +52,7 @@ function Certification() {
      // dispatch(setFormat(questions.length));
     }
   }
-
+ 
   return (
     <div className="certification m-3">
       <div className="row">
