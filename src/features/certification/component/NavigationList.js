@@ -22,11 +22,9 @@ function CertificationList() {
   let activeNav = activeCertificate.href ? activeCertificate.href : ''
   // No certification is selected by the user, set the default one
   if (activeNav === '') {
-   // console.log(process.env);
+
     const defaultCertKey = process.env.REACT_APP_DEFAULT_CERT ? process.env.REACT_APP_DEFAULT_CERT : 'certified_cloud_practitioner_test';
     dispatch(setActive(certifications[defaultCertKey]))
-    //console.log(questions);
-   // dispatch(setJSON(questions))
     activeNav = defaultCertKey;
   }
 

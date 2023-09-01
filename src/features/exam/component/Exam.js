@@ -1,80 +1,98 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Card, Alert } from 'react-bootstrap';
-
 import { Question } from '../../question';
 import { questionsAttempted, setAnswerKey, setResult } from '../../exam';
+
+// Function to check if the current question is answered
+const isCurrentQuestionAnswered = (current, answerKey) => {
+  const currentAnswer = answerKey.find(q => q.questionNumber === current);
+  return currentAnswer && (Array.isArray(currentAnswer.choices) && currentAnswer.choices.length !== 0);
+};
 
 function Exam() {
   const [userWarning, setUserWarning] = useState(false);
   
-  const state = useSelector(state => state);
+  const { certificate: { active: activeCert }, exam } = useSelector(state => state);
   const dispatch = useDispatch();
 
-  const activeCert = state.certificate.active;
-  const { exam } = state;
-
   const toggleQuestions = (action) => {
-    const currentAnswer = exam.answerKey.find(q => q.questionNumber === exam.current);
-
-    // Check if the current answer is either undefined or empty
-    if (!currentAnswer || (Array.isArray(currentAnswer.choices) && currentAnswer.choices.length === 0)) {
-        setUserWarning(true);
-        return;  // Don't proceed to the next/previous question
+    if (!isCurrentQuestionAnswered(exam.current, exam.answerKey)) {
+      setUserWarning(true);
+      return;
     }
-
-    // If there's a valid answer, reset warning and navigate
+    
     setUserWarning(false);
 
-    if (action === 'next') {
-        if (exam.current < exam.total) {
-            dispatch(questionsAttempted({ action })); 
-        }
+    if (action === 'next' && exam.current < exam.total) {
+      dispatch(questionsAttempted({ action }));
     } else if (action === 'prev' && exam.current > 1) {
-        dispatch(questionsAttempted({ action }));
+      dispatch(questionsAttempted({ action }));
     }
-};
+  };
 
   const checkResult = (questions) => {
-    const currentAnswer = exam.answerKey.find(q => q.questionNumber === exam.current);
-
-    // Check if the current answer is either undefined or empty
-    if (!currentAnswer || (Array.isArray(currentAnswer.choices) && currentAnswer.choices.length === 0)) {
-        setUserWarning(true);
-        return;  // Don't proceed to the next/previous question
+    if (!isCurrentQuestionAnswered(exam.current, exam.answerKey)) {
+      setUserWarning(true);
+      return;
     }
-
-    // If there's a valid answer, reset warning and navigate
-    setUserWarning(false);
-
+  
+    if (!questions || questions.length === 0) {
+      console.error("Questions array is empty or not defined.");
+      return;
+    }
+  
     
-    let correct = 0; 
-    let incorrect = 0;
+    setUserWarning(false);
+  
+    
+    let correct   = 0;
+    let incorrect = 0; 
     const { answerKey } = exam;
-
-    Object.keys(answerKey).forEach((qNum) => {
-      const answers = questions[qNum - 1].answer;
-      const ac1 = Object.values(answers).some(answer => answer === answerKey[qNum]);
-
-      if (ac1) {
-        correct++;
-      } else {
-        incorrect++;
+    
+   // console.log(answerKey);
+    
+    questions.forEach((questionObj) => {
+     // console.log(`Question: ${questionObj.q}`);
+    
+      Object.entries(questionObj.choices).forEach(([key, value]) => {
+        console.log(`Choice ${key}: ${value}`);
+      });
+    
+      //console.log(`Answer: ${JSON.stringify(questionObj.answer)}`);
+      //console.log(`Number: ${questionObj.number}`);
+     
+    
+      if(answerKey[questionObj.number-1].questionNumber === questionObj.number) {
+        const userAnswer = [...answerKey[questionObj.number-1].choices]; 
+        const correctAnswer = [...questionObj.answer]; 
+    
+       
+        console.log(`User Answer: ${JSON.stringify(userAnswer)}`);
+        console.log(`Correct Answer: ${JSON.stringify(correctAnswer)}`);
+        console.log('---');
+       
+        if(JSON.stringify(userAnswer.sort()) === JSON.stringify(correctAnswer.sort())) {
+          correct++; 
+        }else{
+          incorrect++;
+        }
       }
     });
+    
+    console.log(`Total correct answers: ${correct}`);
 
     dispatch(setResult({ incorrect, correct }));
-  }
-  
-  let questions = exam.start ? activeCert.jsonData : [];
-  let maxSelection = questions[exam.current - 1]?.answer.length;
 
-  console.log(exam.answered+" "+exam.total);
+  };
+  
+  const questions = exam.start ? activeCert.jsonData : [];
+  const maxSelection = questions[exam.current - 1]?.answer.length;
 
   return (
     <div className="mt-5">
       {userWarning && (
-        <Alert variant={'danger'}>
+        <Alert variant="danger">
           Please select an option from below to proceed.
         </Alert>
       )}

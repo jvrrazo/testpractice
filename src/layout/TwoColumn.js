@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React from 'react'; // No need for '* as React' since you're not using 'React' explicitly.
+import { Sidebar } from '../regions';
+import { Certification } from '../features/certification';
 
-import {Sidebar} from '../regions';
-import {Certification} from '../features/certification'
-
-function TwoColumn() {
+const TwoColumn = () => {
   return (
-    <React.Fragment>
+    <>
       <div className="container-fluid app-background">
         <div className="two-col row">
           <div className="col-md-3 col-sm-12 col-xs-12 app-col-1">
@@ -16,8 +15,8 @@ function TwoColumn() {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }
 
-export {TwoColumn};
+export { TwoColumn };
