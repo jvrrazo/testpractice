@@ -10,7 +10,7 @@ function Question(props) {
   const choices = question.choices;
   const questionNumber = question.number;
   const answers = question.answer;
-
+  const testType = props.testType;  // Extract the testType prop
   
   // Initialize the selectedOptions from the answerKey or set it as an empty array.
   const existingAnswer = props.answerKey.find(answer => answer.questionNumber === question.number);
@@ -34,7 +34,7 @@ function Question(props) {
     return (
       <div className="question w-100 p-4">
         <div className="question-text">
-          <strong >
+          <strong>
             {question.number}.  {question.q}
           </strong>
         </div>
@@ -42,27 +42,24 @@ function Question(props) {
         <Form>
           {
             Object.keys(choices).map(choice => (
-              
-              <Form.Check style={{ color: 'red' }}
+              <Form.Check
                 key={choice}
                 type="checkbox"
-                
                 checked={Array.isArray(selectedOptions) && selectedOptions.includes(choice)}
                 onChange={() => handleCheckboxChange(choice)}
-
-
                 label={
                   <span 
                     style={{ 
-                      color: answers.includes(choice) && selectedOptions.includes(choice) ? 'green' :
-                             !answers.includes(choice) && selectedOptions.includes(choice) ? 'red' : 'black'
-                    }}>
+                      color: testType === "practice" ?
+                        (answers.includes(choice) && selectedOptions.includes(choice) ? 'green' :
+                         !answers.includes(choice) && selectedOptions.includes(choice) ? 'red' : 'black') : 'black'
+                    }}
+                  >
                     {choices[choice]}
-                    { answers.includes(choice) && selectedOptions.includes(choice) && <FaCheck style={{ marginLeft: '8px' }}/> }
-                    { !answers.includes(choice) && selectedOptions.includes(choice) && <FaTimes style={{ marginLeft: '8px' }}/> }
+                    { testType === "practice" && answers.includes(choice) && selectedOptions.includes(choice) && <FaCheck style={{ marginLeft: '8px' }}/> }
+                    { testType === "practice" && !answers.includes(choice) && selectedOptions.includes(choice) && <FaTimes style={{ marginLeft: '8px' }}/> }
                   </span>
                 }
-                
               />
             ))
           }
