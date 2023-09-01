@@ -12,7 +12,6 @@ export const certification = createSlice({
       "description": [],
       "links": [],
       "file": "",
-      "test": "",
       "jsonData": null,
     }
   },

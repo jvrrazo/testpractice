@@ -1,42 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
-import { FaTimesCircle } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { saveAnswer } from '../../exam';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 function Question(props) {
   const question = props.question;
-  const answerKey = props.answerKey;
+  const maxSelections = props.maxSelections;
   const choices = question.choices;
+  const questionNumber = question.number;
   const answers = question.answer;
-  const userSelectedChoice = answerKey[question.number] !== undefined
-    ? answerKey[question.number] : -1;
-  const testType = props.testType;
-
-
-
-  const renderIcon = (choice, testType) => {
-    
-    if(testType === 'practice'){
-      return Object.values(answers).includes(choice) ? null : <FaTimesCircle className="radio-icon" />;
-
-    }
-    
-  };
-
-  const renderText = (choice, testType) => {
-    if(testType === 'practice'){
-      return { color: selectedOption === choice ? 'black' : 'red' }
-    } 
-   
-  }
-
-  const [selectedOption, setSelectedOption] = useState(false);
+  const testType = props.testType;  // Extract the testType prop
   
-  const handleOptionChange = (event, number, choice) => {
-    props.markChoice(number, choice);
-    setSelectedOption(null);
-    return Object.values(answers).includes(choice) ? setSelectedOption(event.target.value) : null;
+  // Initialize the selectedOptions from the answerKey or set it as an empty array.
+  const existingAnswer = props.answerKey.find(answer => answer.questionNumber === question.number);
+  const [selectedOptions, setSelectedOptions] = useState(existingAnswer ? existingAnswer.choices : []);
+  
+  const dispatch = useDispatch();
 
+  const handleCheckboxChange = (choice) => {
+    let updatedOptions = [...selectedOptions];
+    if (Array.isArray(selectedOptions) && selectedOptions.includes(choice)) {
+      updatedOptions = updatedOptions.filter(opt => opt !== choice);
+    } else if (updatedOptions.length < maxSelections) {
+      updatedOptions.push(choice);
+    }
+    setSelectedOptions(updatedOptions);
+    
+    dispatch(saveAnswer({ questionNumber, choices: updatedOptions }));
   };
 
   if (question) {
@@ -47,37 +38,36 @@ function Question(props) {
             {question.number}.  {question.q}
           </strong>
         </div>
-        {
-          Object.keys(choices).map(choice => {
-            return (
-              <Form.Check
-                key={Math.random()}
-                className="question-option my-3"
-                type="radio"
-                name="question"
-                checked={choice === userSelectedChoice ? 1 : 0}
-                value={choice}
-                onChange={(e) => handleOptionChange(e, question.number, choice)}
-                label={<span>
-                  {choices[choice]}
-                  
-                  {choice === userSelectedChoice ?
-                    renderIcon(choice, testType) : null}
-                </span>}
-                style={choice === userSelectedChoice ?
-                  renderText(choice, testType) : null}
-              >
-              </Form.Check>
-            );
-          }
-          )
-        }
 
+        <Form>
+          {
+            Object.keys(choices).map(choice => (
+              <Form.Check
+                key={choice}
+                type="checkbox"
+                checked={Array.isArray(selectedOptions) && selectedOptions.includes(choice)}
+                onChange={() => handleCheckboxChange(choice)}
+                label={
+                  <span 
+                    style={{ 
+                      color: testType === "practice" ?
+                        (answers.includes(choice) && selectedOptions.includes(choice) ? 'green' :
+                         !answers.includes(choice) && selectedOptions.includes(choice) ? 'red' : 'black') : 'black'
+                    }}
+                  >
+                    {choices[choice]}
+                    { testType === "practice" && answers.includes(choice) && selectedOptions.includes(choice) && <FaCheck style={{ marginLeft: '8px' }}/> }
+                    { testType === "practice" && !answers.includes(choice) && selectedOptions.includes(choice) && <FaTimes style={{ marginLeft: '8px' }}/> }
+                  </span>
+                }
+              />
+            ))
+          }
+        </Form>
       </div>
     );
-  }
-  else {
-    return (<React.Fragment />)
+  } else {
+    return null;
   }
 }
 
