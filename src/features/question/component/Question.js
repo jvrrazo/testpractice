@@ -4,71 +4,93 @@ import { useDispatch } from 'react-redux';
 import { saveAnswer } from '../../exam';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-function Question(props) {
-  const question = props.question;
-  const maxSelections = props.maxSelections;
+function Question({ question, maxSelections, testType, answerKey }) {
   const choices = question.choices;
   const questionNumber = question.number;
   const answers = question.answer;
-  const testType = props.testType;  // Extract the testType prop
-  
+
+  const isSingleChoice = question.answer.length === 1;
+  const isTestPractice = testType === 'practice';
+
   // Initialize the selectedOptions from the answerKey or set it as an empty array.
-  const existingAnswer = props.answerKey.find(answer => answer.questionNumber === question.number);
-  const [selectedOptions, setSelectedOptions] = useState(existingAnswer ? existingAnswer.choices : []);
-  
+  const existingAnswer = answerKey.find(
+    (answer) => answer.questionNumber === question.number
+  );
+  const [selectedOptions, setSelectedOptions] = useState(
+    existingAnswer ? existingAnswer.choices : []
+  );
+
   const dispatch = useDispatch();
 
   const handleCheckboxChange = (choice) => {
     let updatedOptions = [...selectedOptions];
     if (Array.isArray(selectedOptions) && selectedOptions.includes(choice)) {
-      updatedOptions = updatedOptions.filter(opt => opt !== choice);
+      updatedOptions = updatedOptions.filter((opt) => opt !== choice);
     } else if (updatedOptions.length < maxSelections) {
       updatedOptions.push(choice);
     }
     setSelectedOptions(updatedOptions);
-    
+
     dispatch(saveAnswer({ questionNumber, choices: updatedOptions }));
   };
 
-  if (question) {
-    return (
-      <div className="question w-100 p-4">
-        <div className="question-text">
-          <strong>
-            {question.number}.  {question.q}
-          </strong>
-        </div>
+  const handleRadioChange = (choice) => {
+    setSelectedOptions([choice]);
+    dispatch(saveAnswer({ questionNumber, choices: [choice] }));
+  };
 
-        <Form>
-          {
-            Object.keys(choices).map(choice => (
-              <Form.Check
-                key={choice}
-                type="checkbox"
-                checked={Array.isArray(selectedOptions) && selectedOptions.includes(choice)}
-                onChange={() => handleCheckboxChange(choice)}
-                label={
-                  <span 
-                    style={{ 
-                      color: testType === "practice" ?
-                        (answers.includes(choice) && selectedOptions.includes(choice) ? 'green' :
-                         !answers.includes(choice) && selectedOptions.includes(choice) ? 'red' : 'black') : 'black'
-                    }}
-                  >
-                    {choices[choice]}
-                    { testType === "practice" && answers.includes(choice) && selectedOptions.includes(choice) && <FaCheck style={{ marginLeft: '8px' }}/> }
-                    { testType === "practice" && !answers.includes(choice) && selectedOptions.includes(choice) && <FaTimes style={{ marginLeft: '8px' }}/> }
-                  </span>
-                }
-              />
-            ))
-          }
-        </Form>
+  const isCorrect = (choice) => {
+    return selectedOptions.includes(choice) && answers.includes(choice);
+  };
+
+  const isIncorrect = (choice) => {
+    return selectedOptions.includes(choice) && !answers.includes(choice);
+  };
+
+  if (!question) return null;
+
+  return (
+    <div className="question w-100 p-4">
+      <div className="question-text">
+        <strong>
+          {question.number}. {question.q}
+        </strong>
       </div>
-    );
-  } else {
-    return null;
-  }
+
+      <Form>
+        {Object.keys(choices).map((choice) => (
+          <Form.Check
+            key={choice}
+            id={choice}
+            type={isSingleChoice ? 'radio' : 'checkbox'}
+            checked={
+              Array.isArray(selectedOptions) && selectedOptions.includes(choice)
+            }
+            onChange={
+              isSingleChoice
+                ? () => handleRadioChange(choice)
+                : () => handleCheckboxChange(choice)
+            }
+            label={
+              !isTestPractice ? (
+                <span>{choices[choice]}</span>
+              ) : (
+                <span
+                  className={`${isCorrect(choice) ? 'text-success' : ''} 
+                    ${isIncorrect(choice) ? 'text-danger' : ''} 
+                    `}
+                >
+                  {choices[choice]}
+                  {isCorrect(choice) && <FaCheck className={'ms-2'} />}
+                  {isIncorrect(choice) && <FaTimes className={'ms-2'} />}
+                </span>
+              )
+            }
+          />
+        ))}
+      </Form>
+    </div>
+  );
 }
 
 export { Question };
